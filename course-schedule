@@ -1,0 +1,41 @@
+class Solution {
+public:
+    bool dfs(int i,unordered_map<int,list<int>>&adj,vector<int>&dfsvisited,vector<int>&visited){
+        visited[i]=1;
+        dfsvisited[i]=1;
+        for(auto it : adj[i]){
+            if(!visited[it]){
+                if(dfs(it,adj,dfsvisited,visited)){
+                    return true;
+                }
+            }
+            else if(dfsvisited[it]){
+                return true;
+            }
+        }
+        dfsvisited[i]=0;
+        return false;
+        
+    }
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        unordered_map<int ,list<int>>adj;
+        for(int i=0;i< prerequisites.size();i++){
+            int u=prerequisites[i][0];
+            int v=prerequisites[i][1];
+            adj[u].push_back(v);
+        }
+        vector<int>visited(numCourses);
+        vector<int>dfsvisited(numCourses);
+        for(int i=0;i<numCourses;i++){
+            if(dfs(i,adj,visited,dfsvisited)){
+                return false;
+            }
+            
+        }
+        return true;
+    }
+
+
+        
+    
+};
